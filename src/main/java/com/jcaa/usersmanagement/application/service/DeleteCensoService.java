@@ -15,8 +15,8 @@ public class DeleteCensoService implements DeleteCensoUseCase {
 
     @Override
     public void execute(DeleteCensoCommand command) {
-        getCensoByIdPort.execute(command.censoId())
+        getCensoByIdPort.findById(command.censoId())
                 .orElseThrow(() -> CensoNotFoundException.becauseIdWasNotFound(command.censoId()));
-        deleteCensoPort.execute(command.censoId());
+        deleteCensoPort.delete(command.censoId());
     }
 }
