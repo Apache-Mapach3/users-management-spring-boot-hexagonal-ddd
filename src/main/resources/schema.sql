@@ -28,6 +28,32 @@ VALUES (
     'admin@example.com',
     '$2a$12$placeholderHashReplaceWithRealBCryptHash',
     'ADMIN',
-    'ACTIVE'
-);
+    'ACTIVE';
+
+-- =============================================
+-- Tabla para la Entidad Censo
+-- =============================================
+        CREATE TABLE IF NOT EXISTS censos (
+    id VARCHAR(36) NOT NULL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    fecha DATE NOT NULL,
+    pais VARCHAR(100) NOT NULL,
+    departamento VARCHAR(100) NOT NULL,
+    ciudad VARCHAR(100) NOT NULL,
+    casa VARCHAR(100) NOT NULL,
+    num_hombres INT NOT NULL,
+    num_mujeres INT NOT NULL,
+    num_ancianos_hombres INT NOT NULL,
+    num_ancianas_mujeres INT NOT NULL,
+    num_ninos INT NOT NULL,
+    num_ninas INT NOT NULL,
+    num_habitaciones INT NOT NULL,
+    num_camas INT NOT NULL,
+    tiene_agua BOOLEAN NOT NULL,
+    tiene_luz BOOLEAN NOT NULL,
+    tiene_alcantarillado BOOLEAN NOT NULL,
+    tiene_gas BOOLEAN NOT NULL,
+    tiene_otros_servicios BOOLEAN NOT NULL,
+    nombre_sensador VARCHAR(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
