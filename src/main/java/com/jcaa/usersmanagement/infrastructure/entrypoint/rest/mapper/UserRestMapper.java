@@ -9,6 +9,8 @@ import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.request.Creat
 import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.request.UpdateUserRestRequest;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.response.UserRestResponse;
 import lombok.experimental.UtilityClass;
+import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.request.UserLoginRestRequest;
+import com.jcaa.usersmanagement.application.service.dto.command.LoginCommand;
 
 import java.util.List;
 
@@ -53,6 +55,10 @@ public class UserRestMapper {
 
   public List<UserRestResponse> toResponseList(final List<UserModel> users) {
     return users.stream().map(UserRestMapper::toResponse).toList();
+  }
+
+  public static LoginCommand toLoginCommand(final UserLoginRestRequest request) {
+    return new LoginCommand(request.email(), request.password());
   }
 }
 

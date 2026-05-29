@@ -4,6 +4,7 @@ import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.request.Creat
 import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.request.UpdateUserRestRequest;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.response.ApiErrorResponse;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.response.UserRestResponse;
+import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.request.UserLoginRestRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -16,7 +17,8 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.request.UserLoginRestRequest;
+import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.response.UserRestResponse;
 /**
  * Contrato OpenAPI / Swagger para {@link UserRestController}.
  *
@@ -25,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  */
 @Tag(name = "Users", description = "Gestión de usuarios: crear, consultar, actualizar y eliminar.")
 public interface UserRestControllerDocs {
-
+    UserRestResponse login(final UserLoginRestRequest request);
   // ─────────────────────────────────────────────────────────────────────────────
   // POST /api/users
   // ─────────────────────────────────────────────────────────────────────────────

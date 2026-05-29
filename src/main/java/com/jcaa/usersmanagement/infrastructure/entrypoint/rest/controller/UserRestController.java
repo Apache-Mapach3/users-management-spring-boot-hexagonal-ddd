@@ -5,13 +5,16 @@ import com.jcaa.usersmanagement.application.port.in.DeleteUserUseCase;
 import com.jcaa.usersmanagement.application.port.in.GetAllUsersUseCase;
 import com.jcaa.usersmanagement.application.port.in.GetUserByIdUseCase;
 import com.jcaa.usersmanagement.application.port.in.UpdateUserUseCase;
+import com.jcaa.usersmanagement.application.port.in.LoginUseCase; // <-- NUEVO
 import com.jcaa.usersmanagement.application.service.dto.command.CreateUserCommand;
 import com.jcaa.usersmanagement.application.service.dto.command.DeleteUserCommand;
 import com.jcaa.usersmanagement.application.service.dto.command.UpdateUserCommand;
+import com.jcaa.usersmanagement.application.service.dto.command.LoginCommand; // <-- NUEVO
 import com.jcaa.usersmanagement.application.service.dto.query.GetUserByIdQuery;
 import com.jcaa.usersmanagement.domain.model.UserModel;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.request.CreateUserRestRequest;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.request.UpdateUserRestRequest;
+import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.request.UserLoginRestRequest; // <-- NUEVO
 import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.dto.response.UserRestResponse;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.rest.mapper.UserRestMapper;
 import jakarta.validation.Valid;
@@ -32,13 +35,21 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-public class UserRestController implements UserRestControllerDocs {
+public class UserRestController  {
 
   private final CreateUserUseCase createUserUseCase;
   private final UpdateUserUseCase updateUserUseCase;
   private final DeleteUserUseCase deleteUserUseCase;
   private final GetUserByIdUseCase getUserByIdUseCase;
   private final GetAllUsersUseCase getAllUsersUseCase;
+  private final LoginUseCase loginUseCase; // <-- NUEVO
+
+  @PostMapping("/login") // <-- NUEVO
+  public UserRestResponse login(@Valid @RequestBody final UserLoginRestRequest request) {
+    final LoginCommand command = UserRestMapper.toLoginCommand(request);
+    final UserModel user = loginUseCase.execute(command);
+    return UserRestMapper.toResponse(user);
+  }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -62,8 +73,8 @@ public class UserRestController implements UserRestControllerDocs {
 
   @PutMapping("/{id}")
   public UserRestResponse update(
-      @PathVariable final String id,
-      @Valid @RequestBody final UpdateUserRestRequest request) {
+          @PathVariable final String id,
+          @Valid @RequestBody final UpdateUserRestRequest request) {
     final UpdateUserCommand command = UserRestMapper.toUpdateCommand(id, request);
     final UserModel user = updateUserUseCase.execute(command);
     return UserRestMapper.toResponse(user);
@@ -76,4 +87,3 @@ public class UserRestController implements UserRestControllerDocs {
     deleteUserUseCase.execute(command);
   }
 }
-
