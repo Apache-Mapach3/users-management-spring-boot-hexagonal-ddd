@@ -4,5 +4,5 @@ import com.jcaa.usersmanagement.domain.model.CensoModel;
 import java.util.List;
 
 public interface GetAllCensosPort {
-    List<CensoModel> execute();
+    List<CensoModel> findAll();
 }

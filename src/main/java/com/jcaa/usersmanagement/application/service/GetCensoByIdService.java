@@ -14,7 +14,7 @@ public class GetCensoByIdService implements GetCensoByIdUseCase {
 
     @Override
     public CensoModel execute(GetCensoByIdQuery query) {
-        return getCensoByIdPort.execute(query.censoId())
+        return getCensoByIdPort.findById(query.censoId())
                 .orElseThrow(() -> CensoNotFoundException.becauseIdWasNotFound(query.censoId()));
     }
 }

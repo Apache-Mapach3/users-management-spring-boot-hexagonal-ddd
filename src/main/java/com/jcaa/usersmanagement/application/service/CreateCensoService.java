@@ -20,7 +20,7 @@ public class CreateCensoService implements CreateCensoUseCase {
                 command.tieneAgua(), command.tieneLuz(), command.tieneAlcantarillado(),
                 command.tieneGas(), command.tieneOtrosServicios(), command.nombreSensador()
         );
-        saveCensoPort.execute(censo);
+        saveCensoPort.save(censo);
         return censo;
     }
 }

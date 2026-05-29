@@ -16,7 +16,7 @@ public class UpdateCensoService implements UpdateCensoUseCase {
 
     @Override
     public CensoModel execute(UpdateCensoCommand command) {
-        CensoModel existingCenso = getCensoByIdPort.execute(command.censoId())
+        CensoModel existingCenso = getCensoByIdPort.findById(command.censoId())
                 .orElseThrow(() -> CensoNotFoundException.becauseIdWasNotFound(command.censoId()));
 
         CensoModel updatedCenso = CensoModel.builder()
@@ -43,7 +43,7 @@ public class UpdateCensoService implements UpdateCensoUseCase {
                 .nombreSensador(command.nombreSensador())
                 .build();
 
-        updateCensoPort.execute(updatedCenso);
+        updateCensoPort.update(updatedCenso);
         return updatedCenso;
     }
 }
