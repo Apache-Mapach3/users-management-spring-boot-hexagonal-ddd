@@ -21,6 +21,7 @@ import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.controller.Use
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.validation.Validator;
 import javax.sql.DataSource;
+import org.springframework.context.annotation.Bean;
 
 public final class DependencyContainer {
 
@@ -99,5 +100,41 @@ public final class DependencyContainer {
         properties.get(SMTP_PASSWORD),
         properties.get(SMTP_FROM),
         properties.get(SMTP_FROM_NAME));
+  }
+  //INYECCIÓN DE DEPENDENCIAS PARA CENSO
+  @Bean
+  public com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL censoRepository(
+          javax.sql.DataSource dataSource) {
+    return new com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL(dataSource);
+  }
+
+  @Bean
+  public com.jcaa.usersmanagement.application.port.in.CreateCensoUseCase createCensoUseCase(
+          com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL repository) {
+    return new com.jcaa.usersmanagement.application.service.CreateCensoService(repository);
+  }
+
+  @Bean
+  public com.jcaa.usersmanagement.application.port.in.GetCensoByIdUseCase getCensoByIdUseCase(
+          com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL repository) {
+    return new com.jcaa.usersmanagement.application.service.GetCensoByIdService(repository);
+  }
+
+  @Bean
+  public com.jcaa.usersmanagement.application.port.in.GetAllCensosUseCase getAllCensosUseCase(
+          com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL repository) {
+    return new com.jcaa.usersmanagement.application.service.GetAllCensosService(repository);
+  }
+
+  @Bean
+  public com.jcaa.usersmanagement.application.port.in.UpdateCensoUseCase updateCensoUseCase(
+          com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL repository) {
+    return new com.jcaa.usersmanagement.application.service.UpdateCensoService(repository, repository);
+  }
+
+  @Bean
+  public com.jcaa.usersmanagement.application.port.in.DeleteCensoUseCase deleteCensoUseCase(
+          com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL repository) {
+    return new com.jcaa.usersmanagement.application.service.DeleteCensoService(repository, repository);
   }
 }
