@@ -3,14 +3,47 @@ package com.jcaa.usersmanagement.infrastructure.adapter.persistence.mapper;
 import com.jcaa.usersmanagement.domain.model.CensoModel;
 import com.jcaa.usersmanagement.domain.valueobject.CensoId;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.entity.CensoEntity;
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
 public class CensoPersistenceMapper {
 
+
+    public static CensoModel toModel(CensoEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        return CensoModel.builder()
+                .id(CensoId.fromString(entity.getId()))
+                .nombre(entity.getNombre())
+                .fecha(entity.getFecha())
+                .pais(entity.getPais())
+                .departamento(entity.getDepartamento())
+                .ciudad(entity.getCiudad())
+                .casa(entity.getCasa())
+                .numHombres(entity.getNumHombres())
+                .numMujeres(entity.getNumMujeres())
+                .numAncianosHombres(entity.getNumAncianosHombres())
+                .numAncianasMujeres(entity.getNumAncianasMujeres())
+                .numNinos(entity.getNumNinos())
+                .numNinas(entity.getNumNinas())
+                .numHabitaciones(entity.getNumHabitaciones())
+                .numCamas(entity.getNumCamas())
+                .tieneAgua(entity.isTieneAgua())
+                .tieneLuz(entity.isTieneLuz())
+                .tieneAlcantarillado(entity.isTieneAlcantarillado())
+                .tieneGas(entity.isTieneGas())
+                .tieneOtrosServicios(entity.isTieneOtrosServicios())
+                .nombreSensador(entity.getNombreSensador())
+                .build();
+    }
+
     public static CensoEntity toEntity(CensoModel model) {
+        if (model == null) {
+            return null;
+        }
+
         return CensoEntity.builder()
-                .id(model.getCensoId().value().toString())
+                .id(model.getId().value().toString())
                 .nombre(model.getNombre())
                 .fecha(model.getFecha())
                 .pais(model.getPais())
@@ -31,32 +64,6 @@ public class CensoPersistenceMapper {
                 .tieneGas(model.isTieneGas())
                 .tieneOtrosServicios(model.isTieneOtrosServicios())
                 .nombreSensador(model.getNombreSensador())
-                .build();
-    }
-
-    public static CensoModel toModel(CensoEntity entity) {
-        return CensoModel.builder()
-                .censoId(CensoId.fromString(entity.getId()))
-                .fecha(entity.getFecha())
-                .nombre(entity.getNombre())
-                .pais(entity.getPais())
-                .departamento(entity.getDepartamento())
-                .ciudad(entity.getCiudad())
-                .casa(entity.getCasa())
-                .numHombres(entity.getNumHombres())
-                .numMujeres(entity.getNumMujeres())
-                .numAncianosHombres(entity.getNumAncianosHombres())
-                .numAncianasMujeres(entity.getNumAncianasMujeres())
-                .numNinos(entity.getNumNinos())
-                .numNinas(entity.getNumNinas())
-                .numHabitaciones(entity.getNumHabitaciones())
-                .numCamas(entity.getNumCamas())
-                .tieneAgua(entity.isTieneAgua())
-                .tieneLuz(entity.isTieneLuz())
-                .tieneAlcantarillado(entity.isTieneAlcantarillado())
-                .tieneGas(entity.isTieneGas())
-                .tieneOtrosServicios(entity.isTieneOtrosServicios())
-                .nombreSensador(entity.getNombreSensador())
                 .build();
     }
 }
