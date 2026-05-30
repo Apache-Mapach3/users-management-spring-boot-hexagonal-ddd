@@ -1,54 +1,46 @@
 package com.jcaa.usersmanagement.domain.model;
-
 import com.jcaa.usersmanagement.domain.valueobject.CensoId;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
+
 import java.time.LocalDate;
 
-@Value
+@Getter
 @Builder
+@AllArgsConstructor
 public class CensoModel {
-    CensoId censoId;
-    String nombre;
-    LocalDate fecha;
-    String pais;
-    String departamento;
-    String ciudad;
-    String casa;
 
-    // Estadísticas demográficas
-    int numHombres;
-    int numMujeres;
-    int numAncianosHombres;
-    int numAncianasMujeres;
-    int numNinos;
-    int numNinas;
+    private CensoId id;
+    private String nombre;
+    private LocalDate fecha;
+    private String pais;
+    private String departamento;
+    private String ciudad;
+    private String casa;
+    private int numHombres;
+    private int numMujeres;
+    private int numAncianosHombres;
+    private int numAncianasMujeres;
+    private int numNinos;
+    private int numNinas;
+    private int numHabitaciones;
+    private int numCamas;
+    private boolean tieneAgua;
+    private boolean tieneLuz;
+    private boolean tieneAlcantarillado;
+    private boolean tieneGas;
+    private boolean tieneOtrosServicios;
+    private String nombreSensador;
 
-    // Habitabilidad
-    int numHabitaciones;
-    int numCamas;
-
-    // Servicios públicos
-    boolean tieneAgua;
-    boolean tieneLuz;
-    boolean tieneAlcantarillado;
-    boolean tieneGas;
-    boolean tieneOtrosServicios;
-
-    // Responsable
-    String nombreSensador;
-
-    // Método estático de fábrica para crear un nuevo Censo (Genera el ID y la fecha)
-    public static CensoModel create(
-            String nombre, String pais, String departamento, String ciudad, String casa,
-            int numHombres, int numMujeres, int numAncianosHombres, int numAncianasMujeres,
-            int numNinos, int numNinas, int numHabitaciones, int numCamas,
-            boolean tieneAgua, boolean tieneLuz, boolean tieneAlcantarillado,
-            boolean tieneGas, boolean tieneOtrosServicios, String nombreSensador) {
-
+    public static CensoModel create(String nombre, String pais, String departamento, String ciudad, String casa,
+                                    int numHombres, int numMujeres, int numAncianosHombres, int numAncianasMujeres,
+                                    int numNinos, int numNinas, int numHabitaciones, int numCamas,
+                                    boolean tieneAgua, boolean tieneLuz, boolean tieneAlcantarillado,
+                                    boolean tieneGas, boolean tieneOtrosServicios, String nombreSensador) {
         return CensoModel.builder()
-                .censoId(CensoId.generate())
-                .fecha(LocalDate.now()) // Se registra con la fecha actual
+                .id(CensoId.generate())
+                .fecha(LocalDate.now())
                 .nombre(nombre)
                 .pais(pais)
                 .departamento(departamento)

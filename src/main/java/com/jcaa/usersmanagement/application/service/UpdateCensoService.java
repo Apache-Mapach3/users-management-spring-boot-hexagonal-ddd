@@ -6,13 +6,20 @@ import com.jcaa.usersmanagement.application.port.out.UpdateCensoPort;
 import com.jcaa.usersmanagement.application.service.dto.command.UpdateCensoCommand;
 import com.jcaa.usersmanagement.domain.exception.CensoNotFoundException;
 import com.jcaa.usersmanagement.domain.model.CensoModel;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+import java.util.Objects;
+
 public class UpdateCensoService implements UpdateCensoUseCase {
 
     private final GetCensoByIdPort getCensoByIdPort;
     private final UpdateCensoPort updateCensoPort;
+
+    public UpdateCensoService(
+            final GetCensoByIdPort getCensoByIdPort,
+            final UpdateCensoPort updateCensoPort) {
+        this.getCensoByIdPort = Objects.requireNonNull(getCensoByIdPort, "El getCensoByIdPort no puede ser nulo");
+        this.updateCensoPort = Objects.requireNonNull(updateCensoPort, "El updateCensoPort no puede ser nulo");
+    }
 
     @Override
     public CensoModel execute(UpdateCensoCommand command) {

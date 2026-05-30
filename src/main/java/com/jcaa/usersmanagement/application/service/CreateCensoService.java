@@ -4,12 +4,16 @@ import com.jcaa.usersmanagement.application.port.in.CreateCensoUseCase;
 import com.jcaa.usersmanagement.application.port.out.SaveCensoPort;
 import com.jcaa.usersmanagement.application.service.dto.command.CreateCensoCommand;
 import com.jcaa.usersmanagement.domain.model.CensoModel;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+import java.util.Objects;
+
 public class CreateCensoService implements CreateCensoUseCase {
 
     private final SaveCensoPort saveCensoPort;
+
+    public CreateCensoService(final SaveCensoPort saveCensoPort) {
+        this.saveCensoPort = Objects.requireNonNull(saveCensoPort, "El saveCensoPort no puede ser nulo");
+    }
 
     @Override
     public CensoModel execute(CreateCensoCommand command) {
@@ -20,6 +24,7 @@ public class CreateCensoService implements CreateCensoUseCase {
                 command.tieneAgua(), command.tieneLuz(), command.tieneAlcantarillado(),
                 command.tieneGas(), command.tieneOtrosServicios(), command.nombreSensador()
         );
+
         saveCensoPort.save(censo);
         return censo;
     }
