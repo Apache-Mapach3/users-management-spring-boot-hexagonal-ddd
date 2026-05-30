@@ -1,0 +1,19 @@
+### Login usuario
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "Admin1234!"
+}
+
+### Crear usuario
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "name": "Jose Rivera",
+  "email": "jose.rivera@example.com",
+  "password": "Password123!",
+  "role": "MEMBER"
+}

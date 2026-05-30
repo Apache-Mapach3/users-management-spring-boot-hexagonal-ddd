@@ -4,8 +4,6 @@ import com.jcaa.usersmanagement.application.port.out.EmailSenderPort;
 import com.jcaa.usersmanagement.domain.exception.EmailSenderException;
 import com.jcaa.usersmanagement.domain.model.EmailDestinationModel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -15,10 +13,11 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.util.Objects;
 import java.util.Properties;
 
 @Slf4j
-@Component
+
 public class JavaMailEmailSenderAdapter implements EmailSenderPort {
 
   private static final String MAIL_SMTP_HOST = "mail.smtp.host";
@@ -33,7 +32,9 @@ public class JavaMailEmailSenderAdapter implements EmailSenderPort {
   private final String fromAddress;
   private final String fromName;
 
+  // Constructor explícito preparado para DI Manual
   public JavaMailEmailSenderAdapter(final SmtpConfig config) {
+    Objects.requireNonNull(config, "El objeto SmtpConfig no puede ser nulo");
     this.fromAddress = config.fromAddress();
     this.fromName = config.fromName();
     this.mailSession = buildSession(config);
@@ -47,18 +48,18 @@ public class JavaMailEmailSenderAdapter implements EmailSenderPort {
       log.info(LOG_SENT);
     } catch (final MessagingException | UnsupportedEncodingException exception) {
       throw EmailSenderException.becauseSmtpFailed(
-          destination.getDestinationEmail(), exception.getMessage());
+              destination.getDestinationEmail(), exception.getMessage());
     }
   }
 
   private MimeMessage buildMessage(final EmailDestinationModel destination)
-      throws MessagingException, UnsupportedEncodingException {
+          throws MessagingException, UnsupportedEncodingException {
     final MimeMessage message = new MimeMessage(mailSession);
     message.setFrom(new InternetAddress(fromAddress, fromName, CHARSET_UTF8));
     message.addRecipient(
-        Message.RecipientType.TO,
-        new InternetAddress(
-            destination.getDestinationEmail(), destination.getDestinationName(), CHARSET_UTF8));
+            Message.RecipientType.TO,
+            new InternetAddress(
+                    destination.getDestinationEmail(), destination.getDestinationName(), CHARSET_UTF8));
     message.setSubject(destination.getSubject(), CHARSET_UTF8);
     message.setContent(destination.getBody(), CONTENT_TYPE_HTML);
     return message;
@@ -67,13 +68,13 @@ public class JavaMailEmailSenderAdapter implements EmailSenderPort {
   private static Session buildSession(final SmtpConfig config) {
     final Properties properties = buildSmtpProperties(config);
     return Session.getInstance(
-        properties,
-        new Authenticator() {
-          @Override
-          protected PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(config.username(), config.password());
-          }
-        });
+            properties,
+            new Authenticator() {
+              @Override
+              protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(config.username(), config.password());
+              }
+            });
   }
 
   private static Properties buildSmtpProperties(final SmtpConfig config) {

@@ -1,12 +1,7 @@
 package com.jcaa.usersmanagement.domain.exception;
 
-public abstract class DomainException extends RuntimeException {
-
-  protected DomainException(final String message) {
+public class DomainException extends RuntimeException { // <-- Clave: RuntimeException
+  public DomainException(String message) {
     super(message);
-  }
-
-  protected DomainException(final String message, final Throwable cause) {
-    super(message, cause);
   }
 }

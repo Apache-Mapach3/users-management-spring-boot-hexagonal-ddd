@@ -21,7 +21,6 @@ import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.controller.Use
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.validation.Validator;
 import javax.sql.DataSource;
-import org.springframework.context.annotation.Bean;
 
 public final class DependencyContainer {
 
@@ -44,33 +43,50 @@ public final class DependencyContainer {
     final AppProperties properties = new AppProperties();
 
     final DataSource dataSource = buildDataSource(properties);
-    final UserRepositoryMySQL userRepository = new UserRepositoryMySQL(dataSource);
-
-    final JavaMailEmailSenderAdapter emailSender =
-        new JavaMailEmailSenderAdapter(buildSmtpConfig(properties));
+    final JavaMailEmailSenderAdapter emailSender = new JavaMailEmailSenderAdapter(buildSmtpConfig(properties));
     final EmailNotificationService emailNotification = new EmailNotificationService(emailSender);
-
-    // Construir Validator para las validaciones en la capa de aplicación
     final Validator validator = ValidatorProvider.buildValidator();
 
+    final UserRepositoryMySQL userRepository = new UserRepositoryMySQL(dataSource);
+
     final CreateUserUseCase createUserUseCase =
-        new CreateUserService(userRepository, userRepository, emailNotification, validator);
+            new CreateUserService(userRepository, userRepository, emailNotification, validator);
     final UpdateUserUseCase updateUserUseCase =
-        new UpdateUserService(userRepository, userRepository, userRepository, emailNotification, validator);
+            new UpdateUserService(userRepository, userRepository, userRepository, emailNotification, validator);
     final DeleteUserUseCase deleteUserUseCase =
-        new DeleteUserService(userRepository, userRepository, validator);
+            new DeleteUserService(userRepository, userRepository, validator);
     final GetUserByIdUseCase getUserByIdUseCase = new GetUserByIdService(userRepository, validator);
     final GetAllUsersUseCase getAllUsersUseCase = new GetAllUsersService(userRepository);
     final LoginUseCase loginUseCase = new LoginService(userRepository, validator);
 
     this.userController =
-        new UserController(
-            createUserUseCase,
-            updateUserUseCase,
-            deleteUserUseCase,
-            getUserByIdUseCase,
-            getAllUsersUseCase,
-            loginUseCase);
+            new UserController(
+                    createUserUseCase,
+                    updateUserUseCase,
+                    deleteUserUseCase,
+                    getUserByIdUseCase,
+                    getAllUsersUseCase,
+                    loginUseCase);
+
+    final com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL censoRepository =
+            new com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL(dataSource);
+
+    final com.jcaa.usersmanagement.application.port.in.CreateCensoUseCase createCensoUseCase =
+            new com.jcaa.usersmanagement.application.service.CreateCensoService(censoRepository);
+
+    final com.jcaa.usersmanagement.application.port.in.GetCensoByIdUseCase getCensoByIdUseCase =
+            new com.jcaa.usersmanagement.application.service.GetCensoByIdService(censoRepository);
+
+    final com.jcaa.usersmanagement.application.port.in.GetAllCensosUseCase getAllCensosUseCase =
+            new com.jcaa.usersmanagement.application.service.GetAllCensosService(censoRepository);
+
+    final com.jcaa.usersmanagement.application.port.in.UpdateCensoUseCase updateCensoUseCase =
+            new com.jcaa.usersmanagement.application.service.UpdateCensoService(censoRepository, censoRepository);
+
+    final com.jcaa.usersmanagement.application.port.in.DeleteCensoUseCase deleteCensoUseCase =
+            new com.jcaa.usersmanagement.application.service.DeleteCensoService(censoRepository, censoRepository);
+
+
   }
 
   public UserController userController() {
@@ -79,12 +95,12 @@ public final class DependencyContainer {
 
   private static DataSource buildDataSource(final AppProperties properties) {
     final DatabaseConfig config =
-        new DatabaseConfig(
-            properties.get(DB_HOST),
-            properties.getInt(DB_PORT),
-            properties.get(DB_NAME),
-            properties.get(DB_USER),
-            properties.get(DB_PASSWORD));
+            new DatabaseConfig(
+                    properties.get(DB_HOST),
+                    properties.getInt(DB_PORT),
+                    properties.get(DB_NAME),
+                    properties.get(DB_USER),
+                    properties.get(DB_PASSWORD));
     final HikariDataSource ds = new HikariDataSource();
     ds.setJdbcUrl(config.buildJdbcUrl());
     ds.setUsername(config.username());
@@ -94,47 +110,11 @@ public final class DependencyContainer {
 
   private static SmtpConfig buildSmtpConfig(final AppProperties properties) {
     return new SmtpConfig(
-        properties.get(SMTP_HOST),
-        properties.getInt(SMTP_PORT),
-        properties.get(SMTP_USER),
-        properties.get(SMTP_PASSWORD),
-        properties.get(SMTP_FROM),
-        properties.get(SMTP_FROM_NAME));
-  }
-  //INYECCIÓN DE DEPENDENCIAS PARA CENSO
-  @Bean
-  public com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL censoRepository(
-          javax.sql.DataSource dataSource) {
-    return new com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL(dataSource);
-  }
-
-  @Bean
-  public com.jcaa.usersmanagement.application.port.in.CreateCensoUseCase createCensoUseCase(
-          com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL repository) {
-    return new com.jcaa.usersmanagement.application.service.CreateCensoService(repository);
-  }
-
-  @Bean
-  public com.jcaa.usersmanagement.application.port.in.GetCensoByIdUseCase getCensoByIdUseCase(
-          com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL repository) {
-    return new com.jcaa.usersmanagement.application.service.GetCensoByIdService(repository);
-  }
-
-  @Bean
-  public com.jcaa.usersmanagement.application.port.in.GetAllCensosUseCase getAllCensosUseCase(
-          com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL repository) {
-    return new com.jcaa.usersmanagement.application.service.GetAllCensosService(repository);
-  }
-
-  @Bean
-  public com.jcaa.usersmanagement.application.port.in.UpdateCensoUseCase updateCensoUseCase(
-          com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL repository) {
-    return new com.jcaa.usersmanagement.application.service.UpdateCensoService(repository, repository);
-  }
-
-  @Bean
-  public com.jcaa.usersmanagement.application.port.in.DeleteCensoUseCase deleteCensoUseCase(
-          com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.CensoRepositoryMySQL repository) {
-    return new com.jcaa.usersmanagement.application.service.DeleteCensoService(repository, repository);
+            properties.get(SMTP_HOST),
+            properties.getInt(SMTP_PORT),
+            properties.get(SMTP_USER),
+            properties.get(SMTP_PASSWORD),
+            properties.get(SMTP_FROM),
+            properties.get(SMTP_FROM_NAME));
   }
 }

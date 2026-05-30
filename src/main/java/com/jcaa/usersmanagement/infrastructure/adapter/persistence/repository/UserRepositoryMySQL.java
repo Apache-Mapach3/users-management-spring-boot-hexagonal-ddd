@@ -13,9 +13,6 @@ import com.jcaa.usersmanagement.domain.valueobject.UserId;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.dto.UserPersistenceDto;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.exception.PersistenceException;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.mapper.UserPersistenceMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -23,13 +20,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-@Slf4j
-@Repository
-@RequiredArgsConstructor
 public class UserRepositoryMySQL
-    implements SaveUserPort,
+        implements SaveUserPort,
         UpdateUserPort,
         GetUserByIdPort,
         GetUserByEmailPort,
@@ -37,34 +32,38 @@ public class UserRepositoryMySQL
         DeleteUserPort {
 
   private static final String SQL_INSERT =
-      "INSERT INTO users "
-      + "(id, name, email, password, role, status, created_at, updated_at) "
-      + "VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
+          "INSERT INTO users "
+                  + "(id, name, email, password, role, status, created_at, updated_at) "
+                  + "VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
   private static final String SQL_UPDATE =
-      "UPDATE users SET name = ?, email = ?, password = ?, role = ?, status = ?, updated_at = NOW() "
-      + "WHERE id = ?";
+          "UPDATE users SET name = ?, email = ?, password = ?, role = ?, status = ?, updated_at = NOW() "
+                  + "WHERE id = ?";
 
   private static final String SQL_SELECT_BY_ID =
-      "SELECT id, name, email, password, role, status, created_at, updated_at "
-      + "FROM users "
-      + "WHERE id = ? LIMIT 1";
+          "SELECT id, name, email, password, role, status, created_at, updated_at "
+                  + "FROM users "
+                  + "WHERE id = ? LIMIT 1";
 
   private static final String SQL_SELECT_BY_EMAIL =
-      "SELECT id, name, email, password, role, status, created_at, updated_at "
-      + "FROM users "
-      + "WHERE email = ? LIMIT 1";
+          "SELECT id, name, email, password, role, status, created_at, updated_at "
+                  + "FROM users "
+                  + "WHERE email = ? LIMIT 1";
 
   private static final String SQL_SELECT_ALL =
-      "SELECT id, name, email, password, role, status, created_at, updated_at "
-      + "FROM users "
-      + "ORDER BY name ASC";
+          "SELECT id, name, email, password, role, status, created_at, updated_at "
+                  + "FROM users "
+                  + "ORDER BY name ASC";
 
   private static final String SQL_DELETE =
-        "DELETE FROM users "
-        + "WHERE id = ?";
+          "DELETE FROM users "
+                  + "WHERE id = ?";
 
   private final DataSource dataSource;
+
+  public UserRepositoryMySQL(final DataSource dataSource) {
+    this.dataSource = Objects.requireNonNull(dataSource, "El dataSource no puede ser nulo");
+  }
 
   @Override
   public UserModel save(final UserModel user) {
@@ -164,6 +163,6 @@ public class UserRepositoryMySQL
 
   private UserModel findByIdOrFail(final UserId userId) {
     return getById(userId)
-        .orElseThrow(() -> UserNotFoundException.becauseIdWasNotFound(userId.value()));
+            .orElseThrow(() -> UserNotFoundException.becauseIdWasNotFound(userId.value()));
   }
 }

@@ -5,27 +5,31 @@ import com.jcaa.usersmanagement.domain.model.CensoModel;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.entity.CensoEntity;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.exception.CensoPersistenceException;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.mapper.CensoPersistenceMapper;
-import lombok.RequiredArgsConstructor;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 public class CensoRepositoryMySQL implements SaveCensoPort, UpdateCensoPort, DeleteCensoPort, GetCensoByIdPort, GetAllCensosPort {
 
     private final DataSource dataSource;
 
+    public CensoRepositoryMySQL(final DataSource dataSource) {
+        this.dataSource = Objects.requireNonNull(dataSource, "El dataSource no puede ser nulo");
+    }
+
     @Override
-    public void save(CensoModel censo) {
+    public CensoModel save(CensoModel censo) {
         String sql = "INSERT INTO censos (id, nombre, fecha, pais, departamento, ciudad, casa, num_hombres, num_mujeres, num_ancianos_hombres, num_ancianas_mujeres, num_ninos, num_ninas, num_habitaciones, num_camas, tiene_agua, tiene_luz, tiene_alcantarillado, tiene_gas, tiene_otros_servicios, nombre_sensador) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         CensoEntity entity = CensoPersistenceMapper.toEntity(censo);
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             setPreparedStatementParameters(stmt, entity);
             stmt.executeUpdate();
+            return censo; // <-- Aquí estaba el error, ahora devolvemos el modelo.
         } catch (SQLException e) {
             throw new CensoPersistenceException("Error al guardar el censo", e);
         }
