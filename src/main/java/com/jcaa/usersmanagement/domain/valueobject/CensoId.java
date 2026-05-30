@@ -1,13 +1,13 @@
 package com.jcaa.usersmanagement.domain.valueobject;
 
-import com.jcaa.usersmanagement.domain.exception.DomainException;
+import com.jcaa.usersmanagement.domain.exception.InvalidCensoIdException;
 import java.util.UUID;
 
 public record CensoId(UUID value) {
 
     public CensoId {
         if (value == null) {
-            throw new DomainException("El id del censo no puede ser nulo");
+            throw new InvalidCensoIdException("El id del censo no puede ser nulo");
         }
     }
 
@@ -19,7 +19,7 @@ public record CensoId(UUID value) {
         try {
             return new CensoId(UUID.fromString(id));
         } catch (IllegalArgumentException e) {
-            throw new DomainException("El formato del id del censo no es válido");
+            throw new InvalidCensoIdException("El formato del id del censo no es válido");
         }
     }
 }
