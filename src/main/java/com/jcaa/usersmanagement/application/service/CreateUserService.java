@@ -8,24 +8,32 @@ import com.jcaa.usersmanagement.application.service.mapper.UserApplicationMapper
 import com.jcaa.usersmanagement.domain.exception.UserAlreadyExistsException;
 import com.jcaa.usersmanagement.domain.model.UserModel;
 import com.jcaa.usersmanagement.domain.valueobject.UserEmail;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
+import java.util.Objects;
 import java.util.Set;
-import jakarta.validation.ConstraintViolation;
 
 @Slf4j
-@Service
-@RequiredArgsConstructor
 public class CreateUserService implements CreateUserUseCase {
 
   private final SaveUserPort saveUserPort;
   private final GetUserByEmailPort getUserByEmailPort;
   private final EmailNotificationService emailNotificationService;
   private final Validator validator;
+
+  // Constructor explícito para DI Manual
+  public CreateUserService(
+          final SaveUserPort saveUserPort,
+          final GetUserByEmailPort getUserByEmailPort,
+          final EmailNotificationService emailNotificationService,
+          final Validator validator) {
+    this.saveUserPort = Objects.requireNonNull(saveUserPort, "El saveUserPort no puede ser nulo");
+    this.getUserByEmailPort = Objects.requireNonNull(getUserByEmailPort, "El getUserByEmailPort no puede ser nulo");
+    this.emailNotificationService = Objects.requireNonNull(emailNotificationService, "El emailNotificationService no puede ser nulo");
+    this.validator = Objects.requireNonNull(validator, "El validator no puede ser nulo");
+  }
 
   @Override
   public UserModel execute(final CreateUserCommand command) {
@@ -51,10 +59,10 @@ public class CreateUserService implements CreateUserUseCase {
 
   private void ensureEmailIsNotTaken(final UserEmail email) {
     getUserByEmailPort
-        .getByEmail(email)
-        .ifPresent(
-            ignored -> {
-              throw UserAlreadyExistsException.becauseEmailAlreadyExists(email.value());
-            });
+            .getByEmail(email)
+            .ifPresent(
+                    ignored -> {
+                      throw UserAlreadyExistsException.becauseEmailAlreadyExists(email.value());
+                    });
   }
 }

@@ -73,4 +73,8 @@ public final class UserPassword {
     }
   }
 
+  @Override
+  public String toString() {
+    return "UserPassword[***]";
+  }
 }
