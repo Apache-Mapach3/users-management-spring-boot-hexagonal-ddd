@@ -14,13 +14,10 @@ import com.jcaa.usersmanagement.domain.valueobject.UserId;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Set;
 
-@Service
-@RequiredArgsConstructor
 public class UpdateUserService implements UpdateUserUseCase {
 
   private final UpdateUserPort updateUserPort;
@@ -28,6 +25,19 @@ public class UpdateUserService implements UpdateUserUseCase {
   private final GetUserByEmailPort getUserByEmailPort;
   private final EmailNotificationService emailNotificationService;
   private final Validator validator;
+
+  public UpdateUserService(
+          final UpdateUserPort updateUserPort,
+          final GetUserByIdPort getUserByIdPort,
+          final GetUserByEmailPort getUserByEmailPort,
+          final EmailNotificationService emailNotificationService,
+          final Validator validator) {
+    this.updateUserPort = Objects.requireNonNull(updateUserPort, "El updateUserPort no puede ser nulo");
+    this.getUserByIdPort = Objects.requireNonNull(getUserByIdPort, "El getUserByIdPort no puede ser nulo");
+    this.getUserByEmailPort = Objects.requireNonNull(getUserByEmailPort, "El getUserByEmailPort no puede ser nulo");
+    this.emailNotificationService = Objects.requireNonNull(emailNotificationService, "El emailNotificationService no puede ser nulo");
+    this.validator = Objects.requireNonNull(validator, "El validator no puede ser nulo");
+  }
 
   @Override
   public UserModel execute(final UpdateUserCommand command) {
@@ -40,7 +50,7 @@ public class UpdateUserService implements UpdateUserUseCase {
     ensureEmailIsNotTakenByAnotherUser(newEmail, userId);
 
     final UserModel userToUpdate =
-        UserApplicationMapper.fromUpdateCommandToModel(command, current.getPassword());
+            UserApplicationMapper.fromUpdateCommandToModel(command, current.getPassword());
     final UserModel updatedUser = updateUserPort.update(userToUpdate);
 
     emailNotificationService.notifyUserUpdated(updatedUser);
@@ -57,18 +67,18 @@ public class UpdateUserService implements UpdateUserUseCase {
 
   private UserModel findExistingUserOrFail(final UserId userId) {
     return getUserByIdPort
-        .getById(userId)
-        .orElseThrow(() -> UserNotFoundException.becauseIdWasNotFound(userId.value()));
+            .getById(userId)
+            .orElseThrow(() -> UserNotFoundException.becauseIdWasNotFound(userId.value()));
   }
 
   private void ensureEmailIsNotTakenByAnotherUser(final UserEmail newEmail, final UserId ownerId) {
     getUserByEmailPort
-        .getByEmail(newEmail)
-        .ifPresent(
-            found -> {
-              if (!found.getId().equals(ownerId)) {
-                throw UserAlreadyExistsException.becauseEmailAlreadyExists(newEmail.value());
-              }
-            });
+            .getByEmail(newEmail)
+            .ifPresent(
+                    found -> {
+                      if (!found.getId().equals(ownerId)) {
+                        throw UserAlreadyExistsException.becauseEmailAlreadyExists(newEmail.value());
+                      }
+                    });
   }
 }

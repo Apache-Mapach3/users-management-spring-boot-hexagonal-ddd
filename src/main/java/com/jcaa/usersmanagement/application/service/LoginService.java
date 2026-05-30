@@ -10,17 +10,20 @@ import com.jcaa.usersmanagement.domain.valueobject.UserEmail;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
+import java.util.Objects;
 import java.util.Set;
 
-@Service
-@RequiredArgsConstructor
 public class LoginService implements LoginUseCase {
 
   private final GetUserByEmailPort getUserByEmailPort;
   private final Validator validator;
+
+  public LoginService(
+          final GetUserByEmailPort getUserByEmailPort,
+          final Validator validator) {
+    this.getUserByEmailPort = Objects.requireNonNull(getUserByEmailPort, "El getUserByEmailPort no puede ser nulo");
+    this.validator = Objects.requireNonNull(validator, "El validator no puede ser nulo");
+  }
 
   @Override
   public UserModel execute(final LoginCommand command) {
@@ -44,8 +47,8 @@ public class LoginService implements LoginUseCase {
 
   private UserModel findUserOrFailWithInvalidCredentials(final UserEmail email) {
     return getUserByEmailPort
-        .getByEmail(email)
-        .orElseThrow(InvalidCredentialsException::becauseCredentialsAreInvalid);
+            .getByEmail(email)
+            .orElseThrow(InvalidCredentialsException::becauseCredentialsAreInvalid);
   }
 
   private static void verifyPasswordOrFail(final String plainPassword, final UserModel user) {
