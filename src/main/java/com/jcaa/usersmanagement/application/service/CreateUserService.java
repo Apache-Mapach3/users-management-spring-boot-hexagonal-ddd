@@ -12,10 +12,12 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Set;
 
 @Slf4j
+@Service
 public class CreateUserService implements CreateUserUseCase {
 
   private final SaveUserPort saveUserPort;
@@ -23,7 +25,6 @@ public class CreateUserService implements CreateUserUseCase {
   private final EmailNotificationService emailNotificationService;
   private final Validator validator;
 
-  // Constructor explícito para DI Manual
   public CreateUserService(
           final SaveUserPort saveUserPort,
           final GetUserByEmailPort getUserByEmailPort,

@@ -12,7 +12,9 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import java.util.Objects;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 
+@Service
 public class GetUserByIdService implements GetUserByIdUseCase {
 
   private final GetUserByIdPort getUserByIdPort;

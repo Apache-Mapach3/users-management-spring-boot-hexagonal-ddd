@@ -14,10 +14,11 @@ import com.jcaa.usersmanagement.domain.valueobject.UserId;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
-
+import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Set;
 
+@Service
 public class UpdateUserService implements UpdateUserUseCase {
 
   private final UpdateUserPort updateUserPort;

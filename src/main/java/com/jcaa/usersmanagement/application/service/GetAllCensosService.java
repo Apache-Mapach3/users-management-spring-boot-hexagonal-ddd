@@ -3,11 +3,12 @@ package com.jcaa.usersmanagement.application.service;
 import com.jcaa.usersmanagement.application.port.in.GetAllCensosUseCase;
 import com.jcaa.usersmanagement.application.port.out.GetAllCensosPort;
 import com.jcaa.usersmanagement.domain.model.CensoModel;
-
+import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
 
+@Service
 public class GetAllCensosService implements GetAllCensosUseCase {
 
     private final GetAllCensosPort getAllCensosPort;
