@@ -5,9 +5,10 @@ import com.jcaa.usersmanagement.application.port.out.DeleteCensoPort;
 import com.jcaa.usersmanagement.application.port.out.GetCensoByIdPort;
 import com.jcaa.usersmanagement.application.service.dto.command.DeleteCensoCommand;
 import com.jcaa.usersmanagement.domain.exception.CensoNotFoundException;
-
+import org.springframework.stereotype.Service;
 import java.util.Objects;
 
+@Service
 public class DeleteCensoService implements DeleteCensoUseCase {
 
     private final GetCensoByIdPort getCensoByIdPort;

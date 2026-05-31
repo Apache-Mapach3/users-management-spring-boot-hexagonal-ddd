@@ -15,9 +15,10 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.Objects;
 import java.util.Properties;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-
+@Component
 public class JavaMailEmailSenderAdapter implements EmailSenderPort {
 
   private static final String MAIL_SMTP_HOST = "mail.smtp.host";

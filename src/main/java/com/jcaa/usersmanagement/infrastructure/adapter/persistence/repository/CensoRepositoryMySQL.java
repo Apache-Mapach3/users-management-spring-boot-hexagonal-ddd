@@ -5,7 +5,7 @@ import com.jcaa.usersmanagement.domain.model.CensoModel;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.entity.CensoEntity;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.exception.CensoPersistenceException;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.mapper.CensoPersistenceMapper;
-
+import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Repository
 public class CensoRepositoryMySQL implements SaveCensoPort, UpdateCensoPort, DeleteCensoPort, GetCensoByIdPort, GetAllCensosPort {
 
     private final DataSource dataSource;

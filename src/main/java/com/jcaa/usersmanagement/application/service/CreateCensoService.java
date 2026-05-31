@@ -4,9 +4,10 @@ import com.jcaa.usersmanagement.application.port.in.CreateCensoUseCase;
 import com.jcaa.usersmanagement.application.port.out.SaveCensoPort;
 import com.jcaa.usersmanagement.application.service.dto.command.CreateCensoCommand;
 import com.jcaa.usersmanagement.domain.model.CensoModel;
-
+import org.springframework.stereotype.Service;
 import java.util.Objects;
 
+@Service
 public class CreateCensoService implements CreateCensoUseCase {
 
     private final SaveCensoPort saveCensoPort;
