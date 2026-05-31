@@ -1,0 +1,297 @@
+{
+  "info": {
+    "_postman_id": "a2d590aa-d409-49ad-a340-6ba77357bff7",
+    "name": "Coleccion Censo y Usuarios API - Entregable",
+    "description": "Colección de Postman con los comandos cURL requeridos por el profesor para la gestión de usuarios y la tabla Censo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55361398",
+    "_collection_link": "https://go.postman.co/collection/55361398-a2d590aa-d409-49ad-a340-6ba77357bff7?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Módulo Usuarios",
+      "item": [
+        {
+          "name": "POST / Login usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"admin2@example.com\",\n    \"password\": \"Admin1234!\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/users/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST / Crear usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jose Rivera\",\n  \"email\": \"jose.rivera@example.com\",\n  \"password\": \"Password123!\",\n  \"role\": \"MEMBER\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET / usuario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT / usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jose Rivera Modificado\",\n  \"email\": \"jose.rivera@example.com\",\n  \"role\": \"MEMBER\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/users/user-001",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users",
+                "user-001"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE / usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/users/user-001",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users",
+                "user-001"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET / Listar usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Módulo Censo",
+      "item": [
+        {
+          "name": "POST / Crear Censo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"Censo 1\",\n    \"pais\": \"Colombia\",\n    \"departamento\": \"Bolivar\",\n    \"ciudad\": \"Cartagena\",\n    \"casa\": \"Calle 10 #5-20\",\n    \"numHombres\": 2,\n    \"numMujeres\": 2,\n    \"numAncianosHombres\": 1,\n    \"numAncianasMujeres\": 1,\n    \"numNinos\": 1,\n    \"numNinas\": 1,\n    \"numHabitaciones\": 3,\n    \"numCamas\": 4,\n    \"tieneAgua\": true,\n    \"tieneLuz\": true,\n    \"tieneAlcantarillado\": true,\n    \"tieneGas\": true,\n    \"tieneOtrosServicios\": false,\n    \"nombreSensador\": \"Jose Rivera\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/censos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "censos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET / Censo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/censos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "censos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT / Censo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Familia Gomez Actualizada\",\n  \"pais\": \"Colombia\",\n  \"departamento\": \"Antioquia\",\n  \"ciudad\": \"Medellin\",\n  \"casa\": \"Cra 45 # 12-34\",\n  \"numHombres\": 3,\n  \"numMujeres\": 2,\n  \"numAncianosHombres\": 1,\n  \"numAncianasMujeres\": 0,\n  \"numNinos\": 2,\n  \"numNinas\": 0,\n  \"numHabitaciones\": 4,\n  \"numCamas\": 5,\n  \"tieneAgua\": true,\n  \"tieneLuz\": true,\n  \"tieneAlcantarillado\": true,\n  \"tieneGas\": true,\n  \"tieneOtrosServicios\": true,\n  \"nombreSensador\": \"Carlos Rodriguez\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/censos/3c56db01-ae02-4b47-8e8b-f2b6cfdc8a3a",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "censos",
+                "3c56db01-ae02-4b47-8e8b-f2b6cfdc8a3a"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE / Censo",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/censos/3c56db01-ae02-4b47-8e8b-f2b6cfdc8a3a",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "censos",
+                "3c56db01-ae02-4b47-8e8b-f2b6cfdc8a3a"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET / Listar Censo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/censos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "censos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
