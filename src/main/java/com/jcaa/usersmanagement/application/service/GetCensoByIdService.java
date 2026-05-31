@@ -5,10 +5,10 @@ import com.jcaa.usersmanagement.application.port.out.GetCensoByIdPort;
 import com.jcaa.usersmanagement.application.service.dto.query.GetCensoByIdQuery;
 import com.jcaa.usersmanagement.domain.exception.CensoNotFoundException;
 import com.jcaa.usersmanagement.domain.model.CensoModel;
-
+import org.springframework.stereotype.Service;
 import java.util.Objects;
 
-
+@Service
 public class GetCensoByIdService implements GetCensoByIdUseCase {
 
     private final GetCensoByIdPort getCensoByIdPort;

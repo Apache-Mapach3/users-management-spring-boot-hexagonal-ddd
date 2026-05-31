@@ -6,9 +6,10 @@ import com.jcaa.usersmanagement.application.port.out.UpdateCensoPort;
 import com.jcaa.usersmanagement.application.service.dto.command.UpdateCensoCommand;
 import com.jcaa.usersmanagement.domain.exception.CensoNotFoundException;
 import com.jcaa.usersmanagement.domain.model.CensoModel;
-
+import org.springframework.stereotype.Service;
 import java.util.Objects;
 
+@Service
 public class UpdateCensoService implements UpdateCensoUseCase {
 
     private final GetCensoByIdPort getCensoByIdPort;
@@ -27,7 +28,7 @@ public class UpdateCensoService implements UpdateCensoUseCase {
                 .orElseThrow(() -> CensoNotFoundException.becauseIdWasNotFound(command.censoId()));
 
         CensoModel updatedCenso = CensoModel.builder()
-                .censoId(existingCenso.getCensoId())
+                .id(existingCenso.getId())
                 .fecha(existingCenso.getFecha())
                 .nombre(command.nombre())
                 .pais(command.pais())
