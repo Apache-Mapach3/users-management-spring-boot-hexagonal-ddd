@@ -35,7 +35,8 @@ public class CensoRestMapper {
 
     public static CensoRestResponse toResponse(CensoModel model) {
         return new CensoRestResponse(
-                model.getCensoId().value().toString(), model.getNombre(), model.getFecha(),
+                model.getId().value().toString(),  // ← corregido: getId() no getCensoId()
+                model.getNombre(), model.getFecha(),
                 model.getPais(), model.getDepartamento(), model.getCiudad(), model.getCasa(),
                 model.getNumHombres(), model.getNumMujeres(), model.getNumAncianosHombres(), model.getNumAncianasMujeres(),
                 model.getNumNinos(), model.getNumNinas(), model.getNumHabitaciones(), model.getNumCamas(),
